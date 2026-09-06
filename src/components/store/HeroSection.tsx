@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, MessageCircle, ShoppingBag } from "lucide-react";
 import { cloudinaryImg } from "@/lib/utils";
 
-type HeroSlide = {
+export type HeroSlide = {
   id: string;
   title: string;
   subtitle: string;
@@ -23,7 +23,7 @@ type HeroSlide = {
   sortOrder: number;
 };
 
-// Fallback slides used until DB data loads
+// Fallback slides used when no slides are configured in DB
 const FALLBACK_SLIDES: HeroSlide[] = [
   {
     id: "f1",
@@ -81,25 +81,18 @@ const imageVariants = {
   exit: { opacity: 0, scale: 0.96, x: 30, transition: { duration: 0.4, ease: EASE_OUT } },
 };
 
-export default function HeroSection() {
-  const [slides, setSlides] = useState<HeroSlide[]>(FALLBACK_SLIDES);
+export default function HeroSection({ initialSlides }: { initialSlides?: HeroSlide[] }) {
+  // Use server-provided slides immediately — no client fetch needed
+  const resolvedSlides = (initialSlides && initialSlides.length > 0 ? initialSlides : FALLBACK_SLIDES)
+    .filter((s) => s.active);
+
+  const [slides] = useState<HeroSlide[]>(resolvedSlides);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const slideTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Fetch slides from DB
-  useEffect(() => {
-    fetch("/api/admin/hero")
-      .then((r) => r.json())
-      .then((d) => {
-        const active = (d.slides as HeroSlide[]).filter((s) => s.active);
-        if (active.length > 0) setSlides(active);
-      })
-      .catch(() => {});
-  }, []);
-
-  const activeSlides = slides.filter((s) => s.active);
+  const activeSlides = slides;
   const totalSlides = activeSlides.length;
 
   // Progress bar + auto-advance

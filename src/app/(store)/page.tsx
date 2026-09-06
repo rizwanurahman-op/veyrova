@@ -3,7 +3,7 @@ import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import ProductCard from "@/components/store/ProductCard";
-import HeroSection from "@/components/store/HeroSection";
+import HeroSection, { type HeroSlide } from "@/components/store/HeroSection";
 import {
   ShoppingBag,
   Award,
@@ -23,7 +23,7 @@ export const metadata = {
 };
 
 async function getHomeData() {
-  const [featuredProducts, newArrivals, bestSellers, categories] =
+  const [featuredProducts, newArrivals, bestSellers, categories, heroSetting] =
     await Promise.all([
       prisma.product.findMany({
         where: { status: "ACTIVE", isFeatured: true },
@@ -49,9 +49,20 @@ async function getHomeData() {
         },
         orderBy: { sortOrder: "asc" },
       }),
+      prisma.storeSetting.findUnique({ where: { key: "hero_slides" } }),
     ]);
 
-  return { featuredProducts, newArrivals, bestSellers, categories };
+  // Parse hero slides from DB — fall back to empty (HeroSection handles fallback)
+  let heroSlides: HeroSlide[] = [];
+  if (heroSetting?.value) {
+    try {
+      heroSlides = JSON.parse(heroSetting.value) as HeroSlide[];
+    } catch {
+      heroSlides = [];
+    }
+  }
+
+  return { featuredProducts, newArrivals, bestSellers, categories, heroSlides };
 }
 
 // Category icon mapping
@@ -65,13 +76,13 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 export default async function HomePage() {
-  const { featuredProducts, newArrivals, bestSellers, categories } =
+  const { featuredProducts, newArrivals, bestSellers, categories, heroSlides } =
     await getHomeData();
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <HeroSection />
+      {/* Hero Section — slides fetched server-side, no client flash */}
+      <HeroSection initialSlides={heroSlides} />
 
       {/* Value Propositions */}
       <section className="py-10 bg-white border-b border-gold/10">
