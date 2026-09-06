@@ -260,25 +260,25 @@ export default function ImageUploader({
         onDragOver={onDragOver}
         onDrop={onDrop}
         onClick={() => inputRef.current?.click()}
-        className={`relative border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-3 py-10 cursor-pointer transition-all select-none ${
+        className={`relative border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-2 sm:gap-3 py-6 sm:py-10 px-4 cursor-pointer transition-all select-none ${
           dragging
             ? "border-yellow-500 bg-yellow-50 scale-[1.01]"
             : "border-gray-200 bg-gray-50 hover:border-yellow-400 hover:bg-yellow-50/50"
         }`}
       >
         <div
-          className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${
+          className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center transition-colors ${
             dragging ? "bg-yellow-100" : "bg-white border border-gray-100"
           }`}
         >
-          <Upload size={24} className={dragging ? "text-yellow-600" : "text-gray-400"} />
+          <Upload size={22} className={dragging ? "text-yellow-600" : "text-gray-400"} />
         </div>
         <div className="text-center">
-          <p className="text-sm font-semibold text-gray-700">
+          <p className="text-xs sm:text-sm font-semibold text-gray-700">
             {dragging ? "Drop images here" : "Drag & drop images here"}
           </p>
-          <p className="text-xs text-gray-400 mt-1">
-            or click to browse — JPG, PNG, WebP (multiple at once)
+          <p className="text-[0.7rem] sm:text-xs text-gray-400 mt-1">
+            or tap to browse — JPG, PNG, WebP (multiple allowed)
           </p>
         </div>
         <input
@@ -330,10 +330,10 @@ export default function ImageUploader({
       {/* Image Grid */}
       {images.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+          <p className="text-[0.7rem] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2.5">
             {images.length} image{images.length !== 1 ? "s" : ""} — drag to reorder · first image is primary
           </p>
-          <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3">
             {images.map((img, i) => (
               <div
                 key={`${img.url}-${i}`}
@@ -364,38 +364,38 @@ export default function ImageUploader({
 
                 {/* Primary badge */}
                 {img.isPrimary && (
-                  <span className="absolute top-1 left-1 bg-yellow-500 text-white text-[0.55rem] font-bold px-1.5 py-0.5 rounded-full leading-none">
+                  <span className="absolute top-1 left-1 bg-yellow-500 text-white text-[0.55rem] font-bold px-1.5 py-0.5 rounded-full leading-none shadow-xs">
                     PRIMARY
                   </span>
                 )}
 
-                {/* Drag handle */}
-                <div className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                {/* Drag handle (visible on hover for desktop) */}
+                <div className="absolute bottom-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                   <div className="bg-black/40 rounded-md p-0.5">
                     <GripVertical size={10} className="text-white" />
                   </div>
                 </div>
 
-                {/* Action buttons */}
-                <div className="absolute top-1 right-1 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                {/* Action buttons (always visible on touch/mobile, hover on desktop) */}
+                <div className="absolute top-1 right-1 flex flex-col gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                   {/* Delete */}
                   <button
                     type="button"
                     onClick={() => removeImage(i)}
-                    className="w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow"
+                    className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-sm"
                     title="Remove"
                   >
-                    <X size={10} />
+                    <X size={12} />
                   </button>
                   {/* Set primary */}
                   {!img.isPrimary && (
                     <button
                       type="button"
                       onClick={() => setPrimary(i)}
-                      className="w-5 h-5 bg-yellow-500 text-white rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors shadow"
+                      className="w-6 h-6 bg-yellow-500 text-white rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors shadow-sm"
                       title="Set as primary"
                     >
-                      <Star size={9} />
+                      <Star size={11} />
                     </button>
                   )}
                 </div>
@@ -408,7 +408,7 @@ export default function ImageUploader({
               className="aspect-square rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-yellow-400 hover:bg-yellow-50/50 transition-all"
             >
               <ImageIcon size={18} className="text-gray-300" />
-              <span className="text-[0.6rem] text-gray-400 font-medium">Add more</span>
+              <span className="text-[0.65rem] text-gray-400 font-medium">Add more</span>
             </div>
           </div>
         </div>

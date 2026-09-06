@@ -139,20 +139,20 @@ export default function ProductForm({ product }: ProductFormProps) {
   });
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex items-center justify-between mb-6">
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           <Link href="/admin/products" className="p-2 rounded-lg bg-white border border-gray-lighter hover:border-gold transition-all">
             <ArrowLeft size={18} />
           </Link>
-          <h1 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-serif)" }}>
+          <h1 className="text-xl sm:text-2xl font-bold text-black" style={{ fontFamily: "var(--font-serif)" }}>
             {product ? "Edit Product" : "Add New Product"}
           </h1>
         </div>
         <button
           type="submit"
           disabled={loading || isUploading}
-          className="btn-gold !text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+          className="btn-gold !text-sm w-full sm:w-auto justify-center disabled:opacity-60 disabled:cursor-not-allowed shadow-xs"
         >
           <Save size={16} />
           {loading ? "Saving..." : isUploading ? "Uploading images..." : "Save Product"}
@@ -163,7 +163,7 @@ export default function ProductForm({ product }: ProductFormProps) {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Basic Info */}
-          <div className="bg-white rounded-xl border border-gold/10 p-5">
+          <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
             <h3 className="font-semibold text-black mb-4" style={{ fontFamily: "var(--font-serif)" }}>Basic Information</h3>
 
             <div className="space-y-4">
@@ -204,7 +204,7 @@ export default function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {/* Images */}
-          <div className="bg-white rounded-xl border border-gold/10 p-5">
+          <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
             <h3 className="font-semibold text-black mb-4" style={{ fontFamily: "var(--font-serif)" }}>Product Images</h3>
             <ImageUploader
               images={images}
@@ -215,7 +215,7 @@ export default function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {/* Specifications */}
-          <div className="bg-white rounded-xl border border-gold/10 p-5">
+          <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-black" style={{ fontFamily: "var(--font-serif)" }}>Specifications</h3>
               <button type="button" onClick={addSpec} className="text-xs text-gold-dark hover:text-gold flex items-center gap-1">
@@ -225,7 +225,7 @@ export default function ProductForm({ product }: ProductFormProps) {
 
             <div className="space-y-3">
               {specs.map((spec, i) => (
-                <div key={i} className="flex gap-2 items-center">
+                <div key={i} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
                   <input
                     type="text"
                     value={spec.key}
@@ -237,20 +237,22 @@ export default function ProductForm({ product }: ProductFormProps) {
                     placeholder="Key (e.g., Material)"
                     className="flex-1 px-3 py-2 bg-cream-light border border-gold/20 rounded-lg text-sm focus:outline-none focus:border-gold transition-all"
                   />
-                  <input
-                    type="text"
-                    value={spec.value}
-                    onChange={(e) => {
-                      const newSpecs = [...specs];
-                      newSpecs[i].value = e.target.value;
-                      setSpecs(newSpecs);
-                    }}
-                    placeholder="Value (e.g., Premium TPU)"
-                    className="flex-1 px-3 py-2 bg-cream-light border border-gold/20 rounded-lg text-sm focus:outline-none focus:border-gold transition-all"
-                  />
-                  <button type="button" onClick={() => removeSpec(i)} className="p-1.5 text-gray hover:text-red-500 transition-colors">
-                    <X size={16} />
-                  </button>
+                  <div className="flex-1 flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={spec.value}
+                      onChange={(e) => {
+                        const newSpecs = [...specs];
+                        newSpecs[i].value = e.target.value;
+                        setSpecs(newSpecs);
+                      }}
+                      placeholder="Value (e.g., Premium TPU)"
+                      className="flex-1 px-3 py-2 bg-cream-light border border-gold/20 rounded-lg text-sm focus:outline-none focus:border-gold transition-all"
+                    />
+                    <button type="button" onClick={() => removeSpec(i)} className="p-2 sm:p-1.5 text-gray hover:text-red-500 transition-colors shrink-0">
+                      <X size={16} />
+                    </button>
+                  </div>
                 </div>
               ))}
               {specs.length === 0 && (
@@ -260,7 +262,7 @@ export default function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {/* SEO */}
-          <div className="bg-white rounded-xl border border-gold/10 p-5">
+          <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
             <h3 className="font-semibold text-black mb-4" style={{ fontFamily: "var(--font-serif)" }}>SEO</h3>
             <div className="space-y-4">
               <div>
@@ -290,7 +292,7 @@ export default function ProductForm({ product }: ProductFormProps) {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Status & Category */}
-          <div className="bg-white rounded-xl border border-gold/10 p-5">
+          <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
             <h3 className="font-semibold text-black mb-4" style={{ fontFamily: "var(--font-serif)" }}>Publish</h3>
 
             <div className="space-y-4">
@@ -326,7 +328,7 @@ export default function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {/* Pricing */}
-          <div className="bg-white rounded-xl border border-gold/10 p-5">
+          <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
             <h3 className="font-semibold text-black mb-4" style={{ fontFamily: "var(--font-serif)" }}>Pricing</h3>
 
             <div className="space-y-4">
@@ -355,7 +357,7 @@ export default function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {/* Inventory */}
-          <div className="bg-white rounded-xl border border-gold/10 p-5">
+          <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
             <h3 className="font-semibold text-black mb-4" style={{ fontFamily: "var(--font-serif)" }}>Inventory</h3>
 
             <div className="space-y-4">
@@ -393,7 +395,7 @@ export default function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {/* Flags */}
-          <div className="bg-white rounded-xl border border-gold/10 p-5">
+          <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
             <h3 className="font-semibold text-black mb-4" style={{ fontFamily: "var(--font-serif)" }}>Visibility</h3>
 
             <div className="space-y-3">
@@ -402,7 +404,7 @@ export default function ProductForm({ product }: ProductFormProps) {
                 { key: "isNewArrival" as const, label: "New Arrival" },
                 { key: "isBestSeller" as const, label: "Best Seller" },
               ].map((flag) => (
-                <label key={flag.key} className="flex items-center gap-3 cursor-pointer">
+                <label key={flag.key} className="flex items-center gap-3 cursor-pointer py-1">
                   <input
                     type="checkbox"
                     checked={form[flag.key]}

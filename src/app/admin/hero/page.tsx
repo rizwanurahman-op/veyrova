@@ -84,32 +84,34 @@ function SlideEditor({
   };
 
   return (
-    <div className="bg-white border border-gold/20 rounded-2xl overflow-hidden">
+    <div className="bg-white border border-gold/20 rounded-2xl overflow-hidden shadow-xs">
       {/* Header */}
       <div
-        className="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-cream/50 transition-colors"
+        className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 px-3.5 py-3 sm:px-5 sm:py-4 cursor-pointer hover:bg-cream/50 transition-colors"
         onClick={() => setExpanded((v) => !v)}
       >
-        <div className="flex flex-col gap-1 cursor-grab text-gray-300">
-          <GripVertical size={18} />
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+          <div className="flex flex-col gap-1 cursor-grab text-gray-300 shrink-0">
+            <GripVertical size={16} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold text-sm text-black truncate">
+              Slide {index + 1}
+              {slide.title && (
+                <span className="font-normal text-gray ml-2">— {slide.title}</span>
+              )}
+            </p>
+            <p className="text-[0.65rem] text-gray-400 mt-0.5">
+              {slide.active ? "● Active" : "○ Inactive"}
+            </p>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-sm text-black truncate">
-            Slide {index + 1}
-            {slide.title && (
-              <span className="font-normal text-gray ml-2">— {slide.title}</span>
-            )}
-          </p>
-          <p className="text-xs text-gray-400 mt-0.5">
-            {slide.active ? "● Active" : "○ Inactive"}
-          </p>
-        </div>
-        <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
             onClick={() => set("active", !slide.active)}
             title={slide.active ? "Deactivate slide" : "Activate slide"}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-2 sm:p-1.5 rounded-lg transition-colors ${
               slide.active
                 ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
                 : "bg-gray-100 text-gray-400 hover:bg-gray-200"
@@ -121,7 +123,8 @@ function SlideEditor({
             type="button"
             onClick={onMoveUp}
             disabled={index === 0}
-            className="p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-gray-100 disabled:opacity-30 transition-colors"
+            className="p-2 sm:p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-gray-100 disabled:opacity-30 transition-colors"
+            title="Move Up"
           >
             <ChevronUp size={15} />
           </button>
@@ -129,21 +132,24 @@ function SlideEditor({
             type="button"
             onClick={onMoveDown}
             disabled={index === total - 1}
-            className="p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-gray-100 disabled:opacity-30 transition-colors"
+            className="p-2 sm:p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-gray-100 disabled:opacity-30 transition-colors"
+            title="Move Down"
           >
             <ChevronDown size={15} />
           </button>
           <button
             type="button"
             onClick={onDelete}
-            className="p-1.5 rounded-lg bg-red-50 text-red-400 hover:bg-red-100 transition-colors"
+            className="p-2 sm:p-1.5 rounded-lg bg-red-50 text-red-400 hover:bg-red-100 transition-colors"
+            title="Delete Slide"
           >
             <Trash2 size={15} />
           </button>
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-gray-100 transition-colors"
+            className="p-2 sm:p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-gray-100 transition-colors"
+            title={expanded ? "Collapse" : "Expand"}
           >
             {expanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
           </button>
@@ -152,7 +158,7 @@ function SlideEditor({
 
       {/* Expanded body */}
       {expanded && (
-        <div className="px-5 pb-6 border-t border-gold/10 pt-5 space-y-5">
+        <div className="px-3.5 pb-5 sm:px-5 sm:pb-6 border-t border-gold/10 pt-4 sm:pt-5 space-y-4 sm:space-y-5">
           {/* Image Upload */}
           <div>
             <label className="block text-sm font-semibold text-black mb-2 flex items-center gap-2">
@@ -307,21 +313,21 @@ export default function AdminHeroPage() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
+    <div className="w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-serif)" }}>
             Hero Slides
           </h1>
-          <p className="text-sm text-gray mt-1">
+          <p className="text-xs sm:text-sm text-gray mt-0.5">
             Manage the homepage hero carousel — images, text, and CTAs
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <button
             type="button"
             onClick={addSlide}
-            className="btn-outline !text-sm"
+            className="btn-outline !text-sm flex-1 sm:flex-initial justify-center"
           >
             <Plus size={16} />
             Add Slide
@@ -330,7 +336,7 @@ export default function AdminHeroPage() {
             type="button"
             onClick={handleSave}
             disabled={saving}
-            className="btn-gold !text-sm disabled:opacity-50"
+            className="btn-gold !text-sm disabled:opacity-50 flex-1 sm:flex-initial justify-center shadow-xs"
           >
             <Save size={16} />
             {saving ? "Saving…" : saved ? "✓ Saved!" : "Save Changes"}

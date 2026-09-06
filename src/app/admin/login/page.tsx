@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-8 border border-white/10">
+        <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-white/10 shadow-2xl">
           <div className="text-center mb-8">
             <div className="w-14 h-14 rounded-xl bg-gold/10 mx-auto flex items-center justify-center mb-4">
               <Lock size={24} className="text-gold" />

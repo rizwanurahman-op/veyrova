@@ -101,22 +101,22 @@ export default async function AdminDashboard() {
   ];
 
   return (
-    <div>
+    <div className="w-full">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <h1
           className="text-2xl md:text-3xl font-bold text-black"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           Dashboard
         </h1>
-        <p className="text-sm text-gray mt-1">
+        <p className="text-xs sm:text-sm text-gray mt-1">
           Welcome back! Here&apos;s an overview of your store.
         </p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4 mb-6 sm:mb-8">
         {stats.map((stat, i) => {
           const Icon = stat.icon;
           return (
@@ -125,21 +125,21 @@ export default async function AdminDashboard() {
               href={stat.href}
               className="admin-stat-card group cursor-pointer"
             >
-              <div className={`w-10 h-10 rounded-xl ${stat.bg} flex items-center justify-center mb-3`}>
-                <Icon size={20} className={stat.color} />
+              <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl ${stat.bg} flex items-center justify-center mb-2.5 sm:mb-3`}>
+                <Icon size={18} className={`${stat.color} sm:w-5 sm:h-5`} />
               </div>
-              <p className="text-2xl font-bold text-black">{stat.value}</p>
-              <p className="text-xs text-gray mt-1">{stat.label}</p>
+              <p className="text-xl sm:text-2xl font-bold text-black">{stat.value}</p>
+              <p className="text-[0.7rem] sm:text-xs text-gray mt-1 truncate">{stat.label}</p>
             </Link>
           );
         })}
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
         <Link
           href="/admin/products/new"
-          className="flex items-center gap-3 bg-gold text-white p-4 rounded-xl hover:bg-gold-dark transition-all group"
+          className="flex items-center gap-3 bg-gold text-white p-3.5 sm:p-4 rounded-xl hover:bg-gold-dark transition-all group shadow-xs hover:shadow-sm"
         >
           <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
             <Plus size={20} />
@@ -181,18 +181,18 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Recent Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Recent Products */}
-        <div className="bg-white rounded-xl border border-gold/10 p-5">
+        <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-black" style={{ fontFamily: "var(--font-serif)" }}>
               Recent Products
             </h3>
-            <Link href="/admin/products" className="text-xs text-gold-dark hover:text-gold transition-colors">
+            <Link href="/admin/products" className="text-xs text-gold-dark hover:text-gold transition-colors font-medium">
               View All →
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {data.recentProducts.length > 0 ? (
               data.recentProducts.map((product) => (
                 <Link
@@ -200,7 +200,7 @@ export default async function AdminDashboard() {
                   href={`/admin/products/${product.id}`}
                   className="flex items-center gap-3 p-2 rounded-lg hover:bg-cream-light transition-colors"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-cream overflow-hidden shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-cream overflow-hidden shrink-0 border border-gray-lighter">
                     {product.images[0] && (
                       <img
                         src={product.images[0].url}
@@ -211,7 +211,7 @@ export default async function AdminDashboard() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-black truncate">{product.name}</p>
-                    <p className="text-xs text-gray">{product.category?.name || "Uncategorized"}</p>
+                    <p className="text-xs text-gray truncate">{product.category?.name || "Uncategorized"}</p>
                   </div>
                   <span className="text-sm font-semibold text-black shrink-0">
                     {formatPrice(product.price)}
@@ -225,12 +225,12 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Recent Orders */}
-        <div className="bg-white rounded-xl border border-gold/10 p-5">
+        <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-black" style={{ fontFamily: "var(--font-serif)" }}>
               Recent Enquiries
             </h3>
-            <Link href="/admin/orders" className="text-xs text-gold-dark hover:text-gold transition-colors">
+            <Link href="/admin/orders" className="text-xs text-gold-dark hover:text-gold transition-colors font-medium">
               View All →
             </Link>
           </div>

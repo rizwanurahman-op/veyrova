@@ -61,15 +61,19 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
+    <div className="w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-serif)" }}>
             Settings
           </h1>
-          <p className="text-sm text-gray mt-1">Configure your store settings</p>
+          <p className="text-xs sm:text-sm text-gray mt-0.5">Configure your store settings</p>
         </div>
-        <button onClick={handleSave} disabled={saving} className="btn-gold !text-sm disabled:opacity-50">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="btn-gold !text-sm disabled:opacity-50 w-full sm:w-auto justify-center shadow-xs"
+        >
           <Save size={16} />
           {saving ? "Saving..." : saved ? "✓ Saved!" : "Save Settings"}
         </button>
@@ -78,7 +82,7 @@ export default function AdminSettingsPage() {
       {loading ? (
         <div className="text-center py-12 text-gray">Loading settings...</div>
       ) : (
-        <div className="bg-white rounded-xl border border-gold/10 p-5">
+        <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5 shadow-xs">
           <div className="space-y-6">
             {settings.map((setting) => {
               const meta = settingLabels[setting.key] || { label: setting.key, description: "" };

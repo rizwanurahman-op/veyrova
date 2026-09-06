@@ -161,7 +161,7 @@ function CreateOrderModal({ products, onClose, onCreated }: ModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-60 flex items-center justify-center p-3 sm:p-4">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -171,15 +171,15 @@ function CreateOrderModal({ products, onClose, onCreated }: ModalProps) {
       {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
+        <div className="sticky top-0 bg-white border-b border-gray-100 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between rounded-t-2xl z-10">
           <div>
             <h2
-              className="text-lg font-bold text-black"
+              className="text-base sm:text-lg font-bold text-black"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               Log WhatsApp Order
             </h2>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-[0.7rem] sm:text-xs text-gray-500 mt-0.5">
               Manually record a confirmed order
             </p>
           </div>
@@ -191,19 +191,19 @@ function CreateOrderModal({ products, onClose, onCreated }: ModalProps) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Source */}
           <div>
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 block">
               Order Source
             </label>
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               {(["WHATSAPP", "INSTAGRAM"] as const).map((s) => (
                 <button
                   key={s}
                   type="button"
                   onClick={() => setSource(s)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
+                  className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
                     source === s
                       ? s === "WHATSAPP"
                         ? "bg-[#25D366] text-white border-[#25D366]"
@@ -212,9 +212,9 @@ function CreateOrderModal({ products, onClose, onCreated }: ModalProps) {
                   }`}
                 >
                   {s === "WHATSAPP" ? (
-                    <MessageCircle size={16} />
+                    <MessageCircle size={15} />
                   ) : (
-                    <Camera size={16} />
+                    <Camera size={15} />
                   )}
                   {s.charAt(0) + s.slice(1).toLowerCase()}
                 </button>
@@ -224,10 +224,10 @@ function CreateOrderModal({ products, onClose, onCreated }: ModalProps) {
 
           {/* Customer Info */}
           <div>
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 block">
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2.5 block">
               Customer Info
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="relative">
                 <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
@@ -248,7 +248,7 @@ function CreateOrderModal({ products, onClose, onCreated }: ModalProps) {
                   className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/10 transition-all"
                 />
               </div>
-              <div className="relative col-span-2">
+              <div className="relative sm:col-span-2">
                 <MapPin size={14} className="absolute left-3 top-3 text-gray-400" />
                 <textarea
                   placeholder="Delivery address"
@@ -549,9 +549,9 @@ export default function AdminOrdersPage() {
   );
 
   return (
-    <div>
+    <div className="w-full">
       {/* Page header */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1
             className="text-2xl font-bold text-black"
@@ -559,13 +559,13 @@ export default function AdminOrdersPage() {
           >
             Orders & Enquiries
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
             Log and track WhatsApp & Instagram orders
           </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-sm hover:shadow-md transition-all"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-xs hover:shadow-md transition-all w-full sm:w-auto"
           style={{ background: "var(--color-gold-dark)" }}
           id="create-order-btn"
         >
@@ -576,22 +576,22 @@ export default function AdminOrdersPage() {
 
       {/* Summary strip */}
       {orders.length > 0 && (
-        <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 mb-6">
+        <div className="grid grid-cols-2 xs:grid-cols-4 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-6">
           {[
-            { label: "Total", count: orders.length, style: "bg-white border border-gray-200" },
-            { label: "New", count: counts.NEW, style: "bg-blue-50 text-blue-700" },
-            { label: "Confirmed", count: counts.CONFIRMED, style: "bg-emerald-50 text-emerald-700" },
-            { label: "Shipped", count: counts.SHIPPED, style: "bg-purple-50 text-purple-700" },
-            { label: "Delivered", count: counts.DELIVERED, style: "bg-green-50 text-green-700" },
-            { label: "Processing", count: counts.PROCESSING, style: "bg-orange-50 text-orange-700" },
-            { label: "Cancelled", count: counts.CANCELLED, style: "bg-red-50 text-red-700" },
+            { label: "Total", count: orders.length, style: "bg-white border border-gray-200 text-charcoal" },
+            { label: "New", count: counts.NEW, style: "bg-blue-50 text-blue-700 border border-blue-100" },
+            { label: "Confirmed", count: counts.CONFIRMED, style: "bg-emerald-50 text-emerald-700 border border-emerald-100" },
+            { label: "Shipped", count: counts.SHIPPED, style: "bg-purple-50 text-purple-700 border border-purple-100" },
+            { label: "Delivered", count: counts.DELIVERED, style: "bg-green-50 text-green-700 border border-green-100" },
+            { label: "Processing", count: counts.PROCESSING, style: "bg-orange-50 text-orange-700 border border-orange-100" },
+            { label: "Cancelled", count: counts.CANCELLED, style: "bg-red-50 text-red-700 border border-red-100" },
           ].map((s) => (
             <div
               key={s.label}
-              className={`rounded-xl px-3 py-2 text-center ${s.style}`}
+              className={`rounded-xl px-2 py-2 sm:px-3 sm:py-2 text-center shadow-2xs ${s.style}`}
             >
-              <p className="text-lg font-bold">{s.count}</p>
-              <p className="text-xs opacity-70">{s.label}</p>
+              <p className="text-base sm:text-lg font-bold">{s.count}</p>
+              <p className="text-[0.65rem] sm:text-xs opacity-75 font-medium">{s.label}</p>
             </div>
           ))}
         </div>
@@ -599,8 +599,8 @@ export default function AdminOrdersPage() {
 
       {/* Filters */}
       {orders.length > 0 && (
-        <div className="flex gap-3 mb-5 flex-wrap">
-          <div className="relative flex-1 min-w-[200px]">
+        <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 mb-5">
+          <div className="relative flex-1 min-w-0">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
@@ -613,7 +613,7 @@ export default function AdminOrdersPage() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:border-yellow-500 transition-all"
+            className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:border-yellow-500 transition-all"
           >
             <option value="ALL">All Status</option>
             {STATUS_FLOW.map((s) => (
@@ -629,14 +629,14 @@ export default function AdminOrdersPage() {
           <RefreshCw size={24} className="animate-spin text-gray-300" />
         </div>
       ) : filtered.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {filtered.map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow p-5"
+              className="bg-white rounded-2xl border border-gray-100 shadow-xs hover:shadow-md transition-shadow p-3.5 sm:p-5"
             >
               {/* Top row */}
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex flex-wrap sm:flex-nowrap items-start justify-between gap-2.5 mb-3 sm:mb-4">
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-9 h-9 rounded-xl flex items-center justify-center ${

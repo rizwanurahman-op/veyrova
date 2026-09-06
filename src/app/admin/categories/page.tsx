@@ -95,17 +95,17 @@ export default function AdminCategoriesPage() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
+    <div className="w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-black" style={{ fontFamily: "var(--font-serif)" }}>
             Categories
           </h1>
-          <p className="text-sm text-gray mt-1">Manage your product categories and hierarchy</p>
+          <p className="text-xs sm:text-sm text-gray mt-0.5">Manage your product categories and hierarchy</p>
         </div>
         <button
           onClick={() => { resetForm(); setShowForm(true); }}
-          className="btn-gold !text-sm"
+          className="btn-gold !text-sm w-full sm:w-auto justify-center shadow-xs"
         >
           <Plus size={16} /> Add Category
         </button>
@@ -113,7 +113,7 @@ export default function AdminCategoriesPage() {
 
       {/* Form */}
       {showForm && (
-        <div className="bg-white rounded-xl border border-gold/10 p-5 mb-6">
+        <div className="bg-white rounded-xl border border-gold/10 p-4 sm:p-5 mb-6 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-black" style={{ fontFamily: "var(--font-serif)" }}>
               {editingId ? "Edit Category" : "New Category"}
@@ -162,7 +162,7 @@ export default function AdminCategoriesPage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-medium text-gray uppercase tracking-wider mb-1.5 block">Sort Order</label>
                 <input
@@ -185,7 +185,7 @@ export default function AdminCategoriesPage() {
               </div>
             </div>
 
-            <div className="flex gap-2 justify-end">
+            <div className="flex gap-2 justify-end pt-2">
               <button type="button" onClick={resetForm} className="btn-outline !text-sm !py-2">
                 Cancel
               </button>
@@ -198,7 +198,7 @@ export default function AdminCategoriesPage() {
       )}
 
       {/* Categories Tree */}
-      <div className="bg-white rounded-xl border border-gold/10 overflow-hidden">
+      <div className="bg-white rounded-xl border border-gold/10 overflow-hidden shadow-xs">
         {loading ? (
           <div className="text-center py-12 text-gray">Loading categories...</div>
         ) : categories.length === 0 ? (
@@ -214,29 +214,29 @@ export default function AdminCategoriesPage() {
             {categories.map((cat) => (
               <div key={cat.id}>
                 {/* Parent Category */}
-                <div className="flex items-center justify-between px-5 py-3 hover:bg-cream-light/50 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-gold/10 flex items-center justify-center">
+                <div className="flex items-center justify-between px-3 sm:px-5 py-3 hover:bg-cream-light/50 transition-colors gap-2">
+                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gold/10 flex items-center justify-center shrink-0">
                       <FolderTree size={16} className="text-gold-dark" />
                     </div>
-                    <div>
-                      <p className="text-sm font-semibold text-black">{cat.name}</p>
-                      <p className="text-xs text-gray">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-black truncate">{cat.name}</p>
+                      <p className="text-xs text-gray truncate">
                         {cat.children.length} subcategories
                         {cat.description ? ` • ${cat.description}` : ""}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${
+                  <div className="flex items-center gap-1 shrink-0">
+                    <span className={`text-[0.65rem] sm:text-xs px-2 py-0.5 rounded-full font-medium ${
                       cat.status === "ACTIVE" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
                     }`}>
                       {cat.status}
                     </span>
-                    <button onClick={() => handleEdit(cat)} className="p-1.5 text-gray hover:text-gold-dark hover:bg-gold/10 rounded-lg transition-all">
+                    <button onClick={() => handleEdit(cat)} className="p-2 sm:p-1.5 text-gray hover:text-gold-dark hover:bg-gold/10 rounded-lg transition-all" title="Edit">
                       <Edit size={14} />
                     </button>
-                    <button onClick={() => handleDelete(cat.id, cat.name)} className="p-1.5 text-gray hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
+                    <button onClick={() => handleDelete(cat.id, cat.name)} className="p-2 sm:p-1.5 text-gray hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Delete">
                       <Trash2 size={14} />
                     </button>
                   </div>
@@ -246,22 +246,22 @@ export default function AdminCategoriesPage() {
                 {cat.children.map((sub) => (
                   <div
                     key={sub.id}
-                    className="flex items-center justify-between px-5 py-2.5 pl-14 hover:bg-cream-light/50 transition-colors border-t border-gray-lighter/30"
+                    className="flex items-center justify-between px-3 sm:px-5 py-2.5 pl-7 sm:pl-12 hover:bg-cream-light/50 transition-colors border-t border-gray-lighter/30 gap-2"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="text-gray-light text-xs">└─</span>
-                      <div>
-                        <p className="text-sm text-charcoal">{sub.name}</p>
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <span className="text-gray-light text-xs shrink-0">└─</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm text-charcoal truncate">{sub.name}</p>
                         {sub.description && (
-                          <p className="text-xs text-gray">{sub.description}</p>
+                          <p className="text-xs text-gray truncate">{sub.description}</p>
                         )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => handleEdit(sub)} className="p-1.5 text-gray hover:text-gold-dark hover:bg-gold/10 rounded-lg transition-all">
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button onClick={() => handleEdit(sub)} className="p-2 sm:p-1.5 text-gray hover:text-gold-dark hover:bg-gold/10 rounded-lg transition-all" title="Edit">
                         <Edit size={13} />
                       </button>
-                      <button onClick={() => handleDelete(sub.id, sub.name)} className="p-1.5 text-gray hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
+                      <button onClick={() => handleDelete(sub.id, sub.name)} className="p-2 sm:p-1.5 text-gray hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Delete">
                         <Trash2 size={13} />
                       </button>
                     </div>
