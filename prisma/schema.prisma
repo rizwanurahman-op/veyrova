@@ -1,0 +1,150 @@
+// Prisma Schema for VEYROVA E-Commerce Dropshipping Store
+// Database: PostgreSQL/Neon (production)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Admin User - Only super admin can log in
+// ─────────────────────────────────────────────────────────────
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  role          String   @default("ADMIN") // ADMIN | SUPER_ADMIN
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Category - Self-referencing hierarchy (parent → subcategories)
+// ─────────────────────────────────────────────────────────────
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  image       String?  // Category image URL
+  parentId    String?  @map("parent_id")
+  status      String   @default("ACTIVE") // ACTIVE | INACTIVE
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Self-relation for hierarchy
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryHierarchy")
+
+  // Products in this category
+  products Product[]
+
+  @@map("categories")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Product
+// ─────────────────────────────────────────────────────────────
+model Product {
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  description      String?  // Full product description (rich text)
+  shortDescription String?  @map("short_description")
+  price            Float    // Selling price
+  comparePrice     Float?   @map("compare_price") // MRP / strikethrough price
+  sku              String?  @unique
+  stock            Int      @default(0)
+  categoryId       String?  @map("category_id")
+  status           String   @default("DRAFT") // ACTIVE | INACTIVE | DRAFT
+  isFeatured       Boolean  @default(false) @map("is_featured")
+  isNewArrival     Boolean  @default(false) @map("is_new_arrival")
+  isBestSeller     Boolean  @default(false) @map("is_best_seller")
+  specifications   String?  // JSON string for flexible key-value specs
+  seoTitle         String?  @map("seo_title")
+  seoDescription   String?  @map("seo_description")
+  dispatchDays     Int      @default(0) @map("dispatch_days")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  category   Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  images     ProductImage[]
+  orderItems OrderItem[]
+
+  @@map("products")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Product Image
+// ─────────────────────────────────────────────────────────────
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String  @map("product_id")
+  url       String
+  altText   String? @map("alt_text")
+  sortOrder Int     @default(0) @map("sort_order")
+  isPrimary Boolean @default(false) @map("is_primary")
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Order Enquiry - WhatsApp/Instagram leads
+// ─────────────────────────────────────────────────────────────
+model OrderEnquiry {
+  id              String   @id @default(cuid())
+  orderNumber     String   @unique @map("order_number") // VR-1001, VR-1002...
+  source          String   @default("WHATSAPP") // WHATSAPP | INSTAGRAM
+  status          String   @default("NEW") // NEW | CONTACTED | CONFIRMED | PROCESSING | SHIPPED | DELIVERED | CANCELLED
+  totalAmount     Float    @default(0) @map("total_amount")
+  customerName    String?  @map("customer_name")
+  customerPhone   String?  @map("customer_phone")
+  customerEmail   String?  @map("customer_email")
+  customerAddress String?  @map("customer_address")
+  notes           String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  items OrderItem[]
+
+  @@map("order_enquiries")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Order Item
+// ─────────────────────────────────────────────────────────────
+model OrderItem {
+  id             String @id @default(cuid())
+  orderEnquiryId String @map("order_enquiry_id")
+  productId      String @map("product_id")
+  quantity       Int    @default(1)
+  price          Float  // Price at time of order
+
+  orderEnquiry OrderEnquiry @relation(fields: [orderEnquiryId], references: [id], onDelete: Cascade)
+  product      Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Store Settings - Configurable store metadata
+// ─────────────────────────────────────────────────────────────
+model StoreSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+
+  @@map("store_settings")
+}
