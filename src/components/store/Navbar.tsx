@@ -133,10 +133,10 @@ export default function Navbar() {
               isScrolled ? "h-14 sm:h-15 lg:h-[62px]" : "h-15 sm:h-16 lg:h-[74px]"
             )}
           >
-            {/* Hamburger Button (Mobile / Tablet) */}
+            {/* Hamburger Button (Mobile / Tablet / lg) */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 -ml-2 text-black hover:text-gold-dark transition-colors rounded-lg active:scale-95"
+              className="xl:hidden p-2 -ml-2 text-black hover:text-gold-dark transition-colors rounded-lg active:scale-95"
               aria-label="Toggle menu"
               id="mobile-menu-toggle"
             >
@@ -159,7 +159,7 @@ export default function Navbar() {
             </Link>
 
             {/* ── Desktop Nav ── */}
-            <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <div className="hidden xl:flex items-center gap-4 2xl:gap-6">
               <NavLink href="/" active={pathname === "/"}>
                 Home
               </NavLink>
@@ -241,25 +241,25 @@ export default function Navbar() {
                 <Search size={19} />
               </button>
 
-              {/* Mobile direct WhatsApp icon */}
+              {/* Mobile: WhatsApp icon only */}
               <a
                 href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Contact on WhatsApp"
-                className="p-2 text-[#25D366] hover:opacity-85 transition-opacity sm:hidden active:scale-95"
+                className="p-2 text-[#25D366] hover:opacity-85 transition-opacity xl:hidden active:scale-95"
                 id="mobile-navbar-whatsapp"
               >
                 <WhatsAppIcon size={20} />
               </a>
 
-              {/* Tablet / Desktop "Contact Us" pill */}
+              {/* Desktop "Contact Us" pill */}
               <a
                 href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 id="navbar-whatsapp"
-                className="hidden sm:flex items-center gap-1.5 bg-black hover:bg-charcoal text-cream-light text-xs font-medium px-4 py-2 rounded-full transition-colors whitespace-nowrap active:scale-95 shadow-xs"
+                className="hidden xl:flex items-center gap-1.5 bg-black hover:bg-charcoal text-cream-light text-xs font-medium px-4 py-2 rounded-full transition-colors whitespace-nowrap active:scale-95 shadow-xs"
               >
                 <WhatsAppIcon size={14} />
                 <span>Contact Us</span>
